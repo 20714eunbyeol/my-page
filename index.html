@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쌉호구은별의 슬픈 우주 공간 💧⭐</title>
+    <style>
+        /* 기본 리셋 및 폰트 설정 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #050814; /* 비운의 어두운 딥 퍼플 블루 */
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px 60px;
+        }
+
+        /* 별빛 및 우주/눈물 배경 효과 */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 30%, #0c102b 0%, #050716 70%, #02030a 100%);
+        }
+
+        .star {
+            position: absolute;
+            background-color: #8da9c4;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.15; transform: scale(0.8); }
+            50% { opacity: 0.7; transform: scale(1.2); box-shadow: 0 0 8px #00b4d8; }
+        }
+
+        /* 비운의 떨어지는 눈물 효과 */
+        .teardrop {
+            position: absolute;
+            width: 2px;
+            height: 25px;
+            background: linear-gradient(to bottom, rgba(72, 202, 228, 0), rgba(72, 202, 228, 0.8));
+            border-radius: 50%;
+            animation: teardropFall linear infinite;
+        }
+
+        @keyframes teardropFall {
+            0% { transform: translateY(-30px); opacity: 0; }
+            30% { opacity: 0.8; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* 메인 컨테이너 */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            z-index: 1;
+        }
+
+        /* 헤더 / 프로필 섹션 */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: 1px solid rgba(72, 202, 228, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 119, 182, 0.25);
+            animation: float 5s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .profile-avatar {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            display: inline-block;
+            filter: drop-shadow(0 0 15px #48cae4);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: linear-gradient(135deg, #0077b6, #03045e);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(144, 224, 239, 0.3);
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.3);
+        }
+
+        .nickname {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, #90e0ef, #00b4d8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .sub-text {
+            color: #90e0ef;
+            font-size: 0.95rem;
+            word-break: keep-all;
+        }
+
+        /* 섹션 공통 스타일 */
+        .section-card {
+            background: rgba(10, 17, 40, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px 20px;
+            border: 1px solid rgba(72, 202, 228, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #caf0f8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 1. 플립 카드 (좋아하는 3가지) */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 15px;
+        }
+
+        @media (min-width: 480px) {
+            .cards-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 160px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .flip-card-front {
+            background: linear-gradient(145deg, rgba(12, 35, 64, 0.85), rgba(5, 15, 35, 0.9));
+            color: white;
+            box-shadow: inset 0 0 15px rgba(0, 180, 216, 0.2);
+        }
+
+        .flip-card-front h3 {
+            font-size: 1.05rem;
+            color: #90e0ef;
+            margin-top: 8px;
+            word-break: keep-all;
+        }
+
+        .flip-card-back {
+            background: linear-gradient(145deg, #0077b6, #03045e);
+            color: #ffffff;
+            transform: rotateY(180deg);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            word-break: keep-all;
+        }
+
+        .flip-hint {
+            font-size: 0.7rem;
+            color: #8da9c4;
+            margin-top: 4px;
+        }
+
+        /* 2. OX 퀴즈 */
+        .quiz-container {
+            text-align: center;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px dashed rgba(144, 224, 239, 0.4);
+            word-break: keep-all;
+        }
+
+        .ox-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn-ox {
+            flex: 1;
+            padding: 15px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: white;
+        }
+
+        .btn-o {
+            background: linear-gradient(135deg, #3a86ff, #0077b6);
+            box-shadow: 0 4px 15px rgba(58, 134, 255, 0.4);
+        }
+
+        .btn-x {
+            background: linear-gradient(135deg, #00b4d8, #03045e);
+            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4);
+        }
+
+        .btn-ox:active {
+            transform: scale(0.95);
+        }
+
+        .quiz-result {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.05rem;
+            min-height: 28px;
+            transition: all 0.3s;
+        }
+
+        /* 3. 명언 생성기 */
+        .quote-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-left: 4px solid #48cae4;
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 15px;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #fff;
+            word-break: keep-all;
+        }
+
+        .btn-main {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #0077b6, #023e8a);
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 119, 182, 0.4);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-main:active {
+            transform: scale(0.98);
+        }
+
+        /* 4. 클릭 미니게임 */
+        .game-status {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 15px;
+            border-radius: 12px;
+        }
+
+        .status-item {
+            text-align: center;
+        }
+
+        .status-label {
+            font-size: 0.75rem;
+            color: #8da9c4;
+            display: block;
+        }
+
+        .status-val {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #90e0ef;
+        }
+
+        .btn-clicker {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(135deg, #0096c7, #03045e);
+            border: 2px solid rgba(144, 224, 239, 0.3);
+            border-radius: 20px;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 119, 182, 0.4);
+            transition: transform 0.05s ease;
+            outline: none;
+        }
+
+        .btn-clicker:active {
+            transform: scale(0.95);
+        }
+
+        .btn-clicker:disabled {
+            background: #333;
+            border-color: #555;
+            box-shadow: none;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        /* 애니메이션 효과 */
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .confetti-particle {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            pointer-events: none;
+            z-index: 999;
+            animation: fall 1.5s forwards ease-out;
+        }
+
+        @keyframes fall {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(300px) rotate(720deg); }
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8da9c4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 비운의 눈물 우주 배경 -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <div class="container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="profile-avatar">💧⭐</div>
+            <div>
+                <span class="badge">SAD GALAXY EXPLORER</span>
+            </div>
+            <h1 class="nickname">쌉호구은별</h1>
+            <p class="sub-text">"눈물 가득한 우주 속, 끝없이 피어나는 비운의 영혼..."</p>
+        </header>
+
+        <!-- 좋아하는 3가지 카드리스트 -->
+        <section class="section-card">
+            <h2 class="section-title"><span>💙</span> 내가 좋아하는 3가지</h2>
+            <p style="font-size: 0.8rem; color: #8da9c4; margin-bottom: 12px; text-align: center;">카드를 눌러서 사연을 뒤집어보세요!</p>
+            <div class="cards-grid">
+                <!-- 카드 1 -->
+                <div class="flip-card" onclick="toggleCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <span style="font-size: 2rem;">🔥</span>
+                            <h3>쌉호구토론</h3>
+                            <span class="flip-hint">TAP TO FLIP</span>
+                        </div>
+                        <div class="flip-card-back">
+                            남들이 다 "아니오" 할 때 홀로 "예"를 외치며 눈물겹게 호구 잡히는 과정을 열정적으로 분석하는 토론!
+                        </div>
+                    </div>
+                </div>
+                <!-- 카드 2 -->
+                <div class="flip-card" onclick="toggleCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <span style="font-size: 2rem;">💸</span>
+                            <h3>돈빌려주기</h3>
+                            <span class="flip-hint">TAP TO FLIP</span>
+                        </div>
+                        <div class="flip-card-back">
+                            마음이 너무 약해서 통장 잔고를 자꾸 우주 너머로 전송해 버리고 홀로 눈물짓는 깊고 아련한 호구의 정...
+                        </div>
+                    </div>
+                </div>
+                <!-- 카드 3 -->
+                <div class="flip-card" onclick="toggleCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <span style="font-size: 2rem;">🏃💨</span>
+                            <h3>회피형되기</h3>
+                            <span class="flip-hint">TAP TO FLIP</span>
+                        </div>
+                        <div class="flip-card-back">
+                            불리하거나 슬픈 상황이 오면 눈물 흘릴 겨를도 없이 빛의 속도로 우주 저편으로 도망치는 완벽한 회피 스킬!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OX 퀴즈 -->
+        <section class="section-card quiz-container" id="quizSection">
+            <h2 class="section-title"><span>❓</span> 은별 퀴즈</h2>
+            <div class="quiz-question">
+                "은별은 호구호구다"
+            </div>
+            <div class="ox-buttons">
+                <button class="btn-ox btn-o" onclick="checkQuiz('O')">O</button>
+                <button class="btn-ox btn-x" onclick="checkQuiz('X')">X</button>
+            </div>
+            <div class="quiz-result" id="quizResult"></div>
+        </section>
+
+        <!-- 나만의 명언 -->
+        <section class="section-card">
+            <h2 class="section-title"><span>📜</span> 쌉호구은별의 비운의 명언집</h2>
+            <div class="quote-box" id="quoteDisplay">
+                버튼을 눌러 은별의 눈물 어린 우주적 명언을 확인하세요!
+            </div>
+            <button class="btn-main" onclick="generateQuote()">
+                <span>💧</span> 명언 뽑기
+            </button>
+        </section>
+
+        <!-- 10초 스피드 클릭 게임 -->
+        <section class="section-card">
+            <h2 class="section-title"><span>🚀</span> 10초 탭탭! 미니게임</h2>
+            <div class="game-status">
+                <div class="status-item">
+                    <span class="status-label">남은 시간</span>
+                    <span class="status-val" id="timeDisplay">10.0초</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">클릭 수</span>
+                    <span class="status-val" id="scoreDisplay">0회</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">최고 기록</span>
+                    <span class="status-val" id="highScoreDisplay">0회</span>
+                </div>
+            </div>
+            <button class="btn-clicker" id="gameBtn" onclick="handleClick()">
+                START! (누르면 시작)
+            </button>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 쌉호구은별 | Sad & Shiny Cosmic Space 💧</p>
+    </footer>
+
+    <script>
+        /* --- 배경 별 및 눈물 방울 생성 --- */
+        function createSpaceEffects() {
+            const container = document.getElementById('starsContainer');
+            const starCount = 70;
+            const teardropCount = 20;
+
+            // 아련한 별들
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                container.appendChild(star);
+            }
+
+            // 비운의 눈물방울
+            for (let i = 0; i < teardropCount; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'teardrop';
+                drop.style.left = `${Math.random() * 100}%`;
+                drop.style.animationDuration = `${Math.random() * 2 + 1.5}s`;
+                drop.style.animationDelay = `${Math.random() * 4}s`;
+                container.appendChild(drop);
+            }
+        }
+
+        /* --- 1. 카드 뒤집기 --- */
+        function toggleCard(cardElement) {
+            cardElement.classList.toggle('flipped');
+        }
+
+        /* --- 2. OX 퀴즈 --- */
+        function checkQuiz(answer) {
+            const resultEl = document.getElementById('quizResult');
+            const quizSection = document.getElementById('quizSection');
+
+            if (answer === 'X') {
+                resultEl.innerText = "🎉 정답입니다! 은별이는 그냥 호구호구가 아니라 '쌉호구은별'입니다!";
+                resultEl.style.color = "#48cae4";
+                createConfetti();
+            } else {
+                resultEl.innerText = "😭 틀렸습니다! 그냥 '호구호구'라니요, 계급장을 떼다니 서럽네요!";
+                resultEl.style.color = "#ff4d6d";
+                quizSection.classList.remove('shake');
+                // reflow 방식으로 애니메이션 리셋
+                void quizSection.offsetWidth;
+                quizSection.classList.add('shake');
+            }
+        }
+
+        // 축하 파티클 효과
+        function createConfetti() {
+            const colors = ['#00b4d8', '#90e0ef', '#caf0f8', '#0077b6', '#ffffff'];
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti-particle';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 20 + 40}vh`;
+                particle.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                document.body.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 1500);
+            }
+        }
+
+        /* --- 3. 명언 생성기 --- */
+        const quotes = [
+            "“눈물은 우주 먼지를 씻어내는 우주선 세차제일 뿐이다.”",
+            "“오늘 빌려준 돈은 우주 대폭발 이후에나 돌아오겠지...”",
+            "“회피하는 것이 아니다. 잠시 다른 은하계로 워프할 뿐이다.”",
+            "“호구도 계속되면 예술이 된다.”",
+            "“쌉호구라고 놀리지 마라, 나는 마음이 넓은 우주인이다.”",
+            "“내가 흘린 눈물로 은하수를 만들어 보겠다.”",
+            "“지구는 돌고, 내 멘탈도 돌고, 통장 잔고도 돈다.”",
+            "“진정한 회피형은 연락을 씹는 게 아니라 존재를 은폐한다.”",
+            "“빌려준 돈을 잊는 법: 우주의 무한함을 생각한다.”",
+            "“비운의 주인공이라 불러다오... 하지만 호구력만큼은 은하계 1위!”",
+            "“반짝이는 별처럼, 내 호구력도 은은하게 우주를 비춘다.”",
+            "“쌉호구은별의 법칙: 상황이 슬퍼지면 즉시 회피 버튼을 누른다.”"
+        ];
+
+        function generateQuote() {
+            const quoteDisplay = document.getElementById('quoteDisplay');
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            
+            quoteDisplay.style.opacity = 0;
+            setTimeout(() => {
+                quoteDisplay.innerText = quotes[randomIndex];
+                quoteDisplay.style.opacity = 1;
+            }, 150);
+        }
+
+        /* --- 4. 10초 스피드 클릭 게임 --- */
+        let score = 0;
+        let timeLeft = 10.0;
+        let gameInterval = null;
+        let isPlaying = false;
+        let highScore = 0;
+
+        function handleClick() {
+            const gameBtn = document.getElementById('gameBtn');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const timeDisplay = document.getElementById('timeDisplay');
+
+            if (!isPlaying) {
+                // 게임 시작
+                isPlaying = true;
+                score = 1;
+                timeLeft = 10.0;
+                scoreDisplay.innerText = `${score}회`;
+                gameBtn.innerText = "눈물의 광클!! 💧💧";
+                gameBtn.style.background = "linear-gradient(135deg, #00b4d8, #0077b6)";
+
+                const startTime = Date.now();
+                gameInterval = setInterval(() => {
+                    const elapsed = (Date.now() - startTime) / 1000;
+                    timeLeft = Math.max(0, 10 - elapsed);
+                    timeDisplay.innerText = `${timeLeft.toFixed(1)}초`;
+
+                    if (timeLeft <= 0) {
+                        endGame();
+                    }
+                }, 50);
+            } else {
+                // 게임 중 클릭
+                score++;
+                scoreDisplay.innerText = `${score}회`;
+            }
+        }
+
+        function endGame() {
+            clearInterval(gameInterval);
+            isPlaying = false;
+
+            const gameBtn = document.getElementById('gameBtn');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const highScoreDisplay = document.getElementById('highScoreDisplay');
+
+            timeDisplay.innerText = "0.0초";
+
+            if (score > highScore) {
+                highScore = score;
+                highScoreDisplay.innerText = `${highScore}회`;
+                createConfetti();
+                gameBtn.innerText = `👏 슬픔을 딛고 최고기록 달성! (${score}회) - 다시하기`;
+            } else {
+                gameBtn.innerText = `게임 종료! (${score}회) - 다시하기`;
+            }
+
+            gameBtn.style.background = "linear-gradient(135deg, #0096c7, #03045e)";
+        }
+
+        // 페이지 로드 시 초기화
+        window.onload = function() {
+            createSpaceEffects();
+            document.getElementById('quoteDisplay').style.transition = "opacity 0.2s ease";
+        };
+    </script>
+</body>
+</html>
